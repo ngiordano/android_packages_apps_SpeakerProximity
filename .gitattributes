@@ -21,6 +21,7 @@ res/values-it/strings.xml -text svneol=unset#text/plain
 res/values-pl/strings.xml -text svneol=unset#text/plain
 res/values/ids.xml -text svneol=unset#text/plain
 res/values/strings.xml -text svneol=unset#text/plain
+res/xml/preferences.xml -text svneol=unset#text/plain
 src/net/androcom/dev/speakerproximity/BluetoothConnectReceiver.java -text svneol=unset#text/plain
 src/net/androcom/dev/speakerproximity/BluetoothDisconnectReceiver.java -text svneol=unset#text/plain
 src/net/androcom/dev/speakerproximity/BootReceiver.java -text svneol=unset#text/plain
