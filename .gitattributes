@@ -1,1 +1,32 @@
 * text=auto !eol
+/.project -text svneol=unset#text/plain
+/AndroidManifest.xml -text svneol=unset#text/plain
+/default.properties -text svneol=unset#text/plain
+design-res/donate-with-gmarket.xcf -text
+design-res/donate-with-paypal.xcf -text
+res/drawable-hdpi/icon.png -text
+res/drawable-ldpi/icon.png -text
+res/drawable-mdpi/icon.png -text
+res/drawable/andocom_poweredby_banner.png -text
+res/drawable/donate_market.png -text
+res/drawable/donate_paypal.png -text
+res/layout/about.xml -text svneol=unset#text/plain
+res/layout/error.xml -text svneol=unset#text/plain
+res/layout/main.xml -text svneol=unset#text/plain
+res/menu/main_menu.xml -text svneol=unset#text/plain
+res/values-de/strings.xml -text svneol=unset#text/plain
+res/values-it/strings.xml -text svneol=unset#text/plain
+res/values-pl/strings.xml -text svneol=unset#text/plain
+res/values/ids.xml -text svneol=unset#text/plain
+res/values/strings.xml -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/BluetoothConnectReceiver.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/BluetoothDisconnectReceiver.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/BootReceiver.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/CallReceiver.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/HeadSetPlugReceiver.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/MyPhoneStateListener.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/PreferenceScreen.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/SPApp.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/SensorService.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/SpeakerProximity.java -text svneol=unset#text/plain
+src/net/androcom/dev/speakerproximity/log/SendLogActivity.java -text svneol=unset#text/plain
