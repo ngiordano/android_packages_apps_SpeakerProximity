@@ -4,6 +4,8 @@
 /default.properties -text svneol=unset#text/plain
 design-res/donate-with-gmarket.xcf -text
 design-res/donate-with-paypal.xcf -text
+design-res/logo-market.png -text
+design-res/paypal-logo.jpg -text
 res/drawable-hdpi/icon.png -text
 res/drawable-ldpi/icon.png -text
 res/drawable-mdpi/icon.png -text
