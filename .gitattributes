@@ -7,6 +7,7 @@ design-res/donate-with-gmarket.xcf -text
 design-res/donate-with-paypal.xcf -text
 design-res/logo-market.png -text
 design-res/paypal-logo.jpg -text
+design-res/translations/fi.zip -text
 res/drawable-hdpi/icon.png -text
 res/drawable-ldpi/icon.png -text
 res/drawable-mdpi/icon.png -text
@@ -19,6 +20,7 @@ res/layout/error.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain
 res/menu/main_menu.xml -text svneol=unset#text/plain
 res/values-de/strings.xml -text svneol=unset#text/plain
+res/values-fi/strings.xml -text svneol=unset#text/plain
 res/values-it/strings.xml -text svneol=unset#text/plain
 res/values-pl/strings.xml -text svneol=unset#text/plain
 res/values/ids.xml -text svneol=unset#text/plain
