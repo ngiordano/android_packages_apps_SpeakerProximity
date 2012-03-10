@@ -1,9 +1,4 @@
-/****
- * Created by Michel Racic (http://www.2030.tk)
- * 
- * This is the preference screen that loads the preferences from XML
- */
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -29,6 +24,7 @@ public class PreferenceScreen extends PreferenceActivity {
 						return true;
 					}
 				});
+
 		if (PreferenceManager.getDefaultSharedPreferences(
 				getApplicationContext()).getString("calibration",
 				"not calibrated;not calibrated;not calibrated").equals(
@@ -41,8 +37,7 @@ public class PreferenceScreen extends PreferenceActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		/** hack to refresh the values on the preference screen **/
-		// TODO find a proper method for this
+
 		finish();
 		final ComponentName comp = new ComponentName(this.getPackageName(),
 				SpeakerProximity.class.getName());
@@ -50,5 +45,4 @@ public class PreferenceScreen extends PreferenceActivity {
 		SPApp.log("activity result: requestCode=" + requestCode
 				+ " resultCode=" + resultCode);
 	}
-
 }

@@ -1,10 +1,4 @@
-/****
- * Created by Michel Racic (http://www.2030.tk)
- * 
- * This is the application logic class that handles the actual magic ;-)
- */
-
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -21,31 +15,18 @@ import android.telephony.TelephonyManager;
 
 public class MyPhoneStateListener extends PhoneStateListener {
 
-	/** used to Store the calling Context **/
 	private final Context					ctx;
 	private final SPApp						app;
-
-	/** used for preference reading **/
 	private final SharedPreferences			prefs;
-
-	/** used for preference editing **/
 	private final SharedPreferences.Editor	prefsEditor;
-
-	/** used for the sensor management **/
 	private final SensorService				sensorService;
-
-	/** used for the audio routing **/
 	private final AudioManager				audiomanager;
-
-	/** used for turning screen off or on **/
 	private final PowerManager				pm;
 	private PowerManager.WakeLock		wl;
 
-	/** temporary variables **/
 	private boolean							phoneWasCovered					= false;
 	private int								conference						= -1;
 
-	/** Constants **/
 	private final static String				LAST_STATE						= "LastState";
 	private final static String				LAST_PROXIMITY_STATE			= "LastProximityState";
 	private final static String				LAST_CONFERENCE_STATE			= "LastConferenceState";
@@ -54,25 +35,17 @@ public class MyPhoneStateListener extends PhoneStateListener {
 
 	public MyPhoneStateListener(Context context, SensorService sensorService) {
 		super();
-		/** Save the calling context **/
 		ctx = context;
-		/** Save the application instance **/
 		app = SPApp.getInstance();
-		/** save the service reference **/
 		this.sensorService = sensorService;
-		/** get the preference viewer **/
 		prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-		/** get the preference writer **/
 		prefsEditor = prefs.edit();
-		/** get the sensor service reference from the system **/
 		app.setSensorManager((SensorManager) ctx
 				.getSystemService(Context.SENSOR_SERVICE));
-		/** get the audio service reference from the system **/
 		audiomanager = (AudioManager) ctx
 				.getSystemService(Context.AUDIO_SERVICE);
-		/** get the powermanager service reference from the system **/
 		pm = (PowerManager) ctx.getSystemService(Context.POWER_SERVICE);
-		/** get the wakelock to turn display off **/
+
 		if (prefs.getBoolean("handleScreenOff", true)) {
 			try {
 				wl = pm.newWakeLock(PROXIMITY_SCREEN_OFF_WAKE_LOCK, "SpeakerProximity");
@@ -84,19 +57,18 @@ public class MyPhoneStateListener extends PhoneStateListener {
 		app.setProximityListener(new SensorEventListener() {
 			@Override
 			public void onAccuracyChanged(Sensor sensor, int accuracy) {
-				// nothing to do, we don't care (yet?)
 			}
 
 			@Override
 			public void onSensorChanged(SensorEvent event) {
-				/** Detect duplicate events in row **/
+
 				if (prefs.getFloat(LAST_PROXIMITY_STATE, -1) == event.values[0]) {
 					return;
 				} else {
 					prefsEditor.putFloat(LAST_PROXIMITY_STATE, event.values[0]);
 					prefsEditor.commit();
 				}
-				/** local temp vars **/
+
 				final float proxVal = event.values[0];
 				final int sensorType = event.sensor.getType();
 				final String sensorName = event.sensor.getName();
@@ -113,7 +85,6 @@ public class MyPhoneStateListener extends PhoneStateListener {
 						+ audiomanager.isWiredHeadsetOn()
 						+ " headtes_off_eval=" + headsetOff);
 
-				/** get sensor calibration values **/
 				final float init = prefs.getFloat("calibration_init", -1.0f);
 				final float covered = prefs.getFloat("calibration_covered",
 						-1.0f);
@@ -156,51 +127,38 @@ public class MyPhoneStateListener extends PhoneStateListener {
 								: app.getSensorManager().getDefaultSensor(
 										Sensor.TYPE_PROXIMITY).getName()));
 
-		/** Detect duplicate events in row **/
 		if ((state == prefs.getInt(LAST_STATE, -1))) {
 			return;
 		} else if (!prefs.getBoolean("active", false)) {
 			return;
 		}
 
-		/** save the actual state as last state **/
 		prefsEditor.putInt(LAST_STATE, state);
 		prefsEditor.commit();
 
-		/** detect which state the call has and if we have to do some action **/
 		switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE:
 				app.setInCall(false);
 				app.getSensorManager().unregisterListener(
 						app.getProximityListener());
 
-				/**
-				 * Handling conference mode
-				 */
 				if (app.getOrientationListener() != null) {
 					app.getSensorManager().unregisterListener(
 							app.getOrientationListener());
 				}
 
-				/** restore speaker state from beginning of the call **/
 				audiomanager.setSpeakerphoneOn(prefs.getBoolean(
 						SPEAKER_SETTING_BEFORE, false));
 				phoneWasCovered = false;
 				SPApp.log("Phone gets IDLE");
 
 				if (wl != null) {
-					/**
-					 * handling the screen off stuff, taken from
-					 * http://proximitytoolextension.googlecode.com
-					 **/
+
 					if (wl.isHeld()) {
 						wl.release();
 					}
 				}
-				/**
-				 * handling headset changes, taken from
-				 * http://proximitytoolextension.googlecode.com
-				 **/
+
 				if (app.getHeadSetPlugReceiver() != null) {
 					ctx.unregisterReceiver(app.getHeadSetPlugReceiver());
 				}
@@ -213,18 +171,16 @@ public class MyPhoneStateListener extends PhoneStateListener {
 									.getBluetoothDisconnectReceiver());
 				}
 
-				/** stop myself as I'm not in duty anymore **/
 				sensorService.stopSelf();
 
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				app.setInCall(true);
-				/** save speaker state to restore after the call finished **/
+
 				prefsEditor.putBoolean(SPEAKER_SETTING_BEFORE, audiomanager
 						.isSpeakerphoneOn());
 				prefsEditor.commit();
 
-				/** register the Proximitysensor **/
 				if (!app.registerProximityListener()) {
 					SPApp.log("No proximity sensor available");
 				}
@@ -232,19 +188,13 @@ public class MyPhoneStateListener extends PhoneStateListener {
 
 				if (prefs.getBoolean("handleScreenOff", true)) {
 					if (wl != null) {
-						/**
-						 * handling the screnn off stuff, taken from
-						 * http://proximitytoolextension.googlecode.com
-						 **/
+
 						if (!wl.isHeld()) {
 							wl.acquire();
 						}
 					}
 				}
-				/**
-				 * handling headset changes, taken from
-				 * http://proximitytoolextension.googlecode.com
-				 **/
+
 				if (prefs.getBoolean("headset", true)) {
 					app.setHeadSetPlugReceiver(new HeadSetPlugReceiver());
 					ctx
@@ -254,27 +204,19 @@ public class MyPhoneStateListener extends PhoneStateListener {
 											android.content.Intent.ACTION_HEADSET_PLUG));
 				}
 
-				/**
-				 * handling conference mode disable this app if device is flat
-				 * on a table with it's screen
-				 **/
 				if (prefs.getBoolean("conferenceCall", true)) {
 					app.setOrientationListener(new SensorEventListener() {
 						@Override
 						public void onAccuracyChanged(Sensor sensor,
 								int accuracy) {
-							// we don't need to do something here
-
 						}
 
 						@Override
 						public void onSensorChanged(SensorEvent event) {
-							// float x = event.values[0]; // not needed
-							// float y = event.values[1]; // not needed
+
 							final float z = event.values[2];
 							conference = (z < -8 && z > -10) ? 1 : 0;
 
-							/** Detect duplicate events in row **/
 							final int lastConf = prefs.getInt(
 									LAST_CONFERENCE_STATE, -1);
 							if (lastConf != -1 && conference != -1
@@ -286,14 +228,12 @@ public class MyPhoneStateListener extends PhoneStateListener {
 								prefsEditor.commit();
 							}
 							if ((conference == 1) ? true : false) {
-								// upsidedown and flat
 								SPApp.log("changed to upsidedown and flat "
 										+ "event[0]=" + event.values[0]
 										+ " event[1]=" + event.values[1]
 										+ " event[2]=" + event.values[2]);
 								app.unregisterProximityListener();
 							} else {
-								// not upsidedown and flat
 								SPApp.log(" not anymore upsidedown and flat "
 										+ "event[0]=" + event.values[0]
 										+ " event[1]=" + event.values[1]

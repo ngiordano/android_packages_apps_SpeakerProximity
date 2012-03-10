@@ -1,10 +1,4 @@
-/****
- * Created by Michel Racic (http://www.2030.tk)
- * 
- * This is the base application class that handles the global stuff
- */
-
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,27 +13,19 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class SPApp extends Application {
-	/** Self instance reference to be pulled from an activity **/
+
 	private static SPApp		instance;
 
-	/** used for the sensor management **/
 	private SensorEventListener	proximityListener;
 	private SensorManager		sensorManager;
 	private SensorEventListener	orientationListener;
 
-	/**
-	 * handling headset changes, taken from
-	 * http://proximitytoolextension.googlecode.com
-	 **/
 	private BroadcastReceiver	headSetPlugReceiver;
 	private BroadcastReceiver	bluetoothConnectReceiver;
 	private BroadcastReceiver	bluetoothDisconnectReceiver;
 
-	/** State variables **/
 	private boolean				inCall;
 	private boolean				inCalibration;
-
-	// private boolean headsetConnected;
 
 	@Override
 	public void onCreate() {
@@ -100,12 +86,6 @@ public class SPApp extends Application {
 		this.bluetoothDisconnectReceiver = bluetoothDisconnectReceiver;
 	}
 
-	/**
-	 * This is a static logging method to handle logging in one place
-	 * 
-	 * @param msg
-	 *            to be logged
-	 */
 	public static void log(String msg) {
 		Log.d("SpeakerProximity", "["
 				+ new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] "
@@ -136,7 +116,7 @@ public class SPApp extends Application {
 
 	public void setHeadsetConnected(boolean headsetConnected) {
 		Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(
-				getApplicationContext()).edit(); // get the preference writer
+				getApplicationContext()).edit();
 		prefsEditor.putBoolean("isHeadsetConnected", headsetConnected);
 		prefsEditor.commit();
 		prefsEditor = null;

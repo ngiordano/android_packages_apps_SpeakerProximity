@@ -1,4 +1,4 @@
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,13 +14,8 @@ import android.widget.TextView;
 public class CalibrationActivity extends Activity {
 
 	private SPApp						app;
-
 	private Thread						thread;
-
-	/** used for preference reading **/
 	private SharedPreferences			prefs;
-
-	/** used for preference editing **/
 	private SharedPreferences.Editor	prefsEditor;
 
 	private float						actualProximityValue;
@@ -35,35 +30,25 @@ public class CalibrationActivity extends Activity {
 	private float						value1, value2;
 	private int							valueCount;
 
-	/**
-	 * @see android.app.Activity#onCreate(Bundle)
-	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/**
-		 * use this XML layout as the main layout for the preference application
-		 **/
+
 		setContentView(R.layout.calibrate);
 		setTitle(R.string.calibration_header);
 		app = SPApp.getInstance();
-		/** get the preference viewer **/
-		prefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
-		/** get the preference writer **/
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		prefsEditor = prefs.edit();
-		/** get the sensor service reference from the system **/
 		app.setSensorManager((SensorManager) getApplicationContext()
 				.getSystemService(Context.SENSOR_SERVICE));
 		app.setProximityListener(new SensorEventListener() {
 			@Override
 			public void onAccuracyChanged(Sensor sensor, int accuracy) {
-				// nothing to do, we don't care (yet?)
 			}
 
 			@Override
 			public void onSensorChanged(SensorEvent event) {
-				/** local temp vars **/
 				final float proxVal = event.values[0];
 				final int sensorType = event.sensor.getType();
 				final String sensorName = event.sensor.getName();
@@ -76,7 +61,6 @@ public class CalibrationActivity extends Activity {
 				}
 			}
 		});
-		// start calibration wizard
 		startWizard();
 	}
 
@@ -138,7 +122,7 @@ public class CalibrationActivity extends Activity {
 
 	private void init() {
 		app.setInCalibration(true);
-		/** register the Proximitysensor **/
+
 		if (!app.registerProximityListener()) {
 			SPApp.log("No proximity sensor available");
 			showError("No proximity sensor available");
@@ -178,7 +162,6 @@ public class CalibrationActivity extends Activity {
 						value2 = actualProximityValue;
 					} else if (value1 == actualProximityValue
 							|| value2 == actualProximityValue) {
-						// do nothing
 					} else {
 						showError("more than 2 different values, can't calibrate");
 						unregister();

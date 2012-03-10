@@ -1,9 +1,4 @@
-/****
- * Created by Michel Racic (http://www.2030.tk)
- * 
- * This is the Headset receiver too handle a wired headset
- */
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

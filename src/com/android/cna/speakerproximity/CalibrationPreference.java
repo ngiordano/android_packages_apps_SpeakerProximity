@@ -1,4 +1,4 @@
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -39,7 +39,6 @@ public class CalibrationPreference extends Preference {
 				+ getContext().getString(R.string.calibration_uncovered,
 						svalues[2]) + "\n");
 		view.setTextSize(18);
-		view.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
 		return view;
 	}
 }

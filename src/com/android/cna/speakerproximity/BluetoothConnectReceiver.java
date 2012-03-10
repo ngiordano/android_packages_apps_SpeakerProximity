@@ -1,9 +1,4 @@
-/****
- * Created by Michel Racic (http://www.2030.tk)
- * 
- * This is the bluetooth connect broadcast receiver
- */
-package net.androcom.dev.speakerproximity;
+package com.android.cna.speakerproximity;
 
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
@@ -13,7 +8,7 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 
 public class BluetoothConnectReceiver extends BroadcastReceiver {
-	/** Which audio class to listen for, we only want headsets **/
+
 	int	remoteAudioClass	= BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE
 									| BluetoothClass.Device.AUDIO_VIDEO_HEADPHONES
 									| BluetoothClass.Device.AUDIO_VIDEO_PORTABLE_AUDIO;
